@@ -1,0 +1,1027 @@
+
+<!doctype html>
+<html lang="zh-TW" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://mikemomo-com.github.io/homelab-whitepaper/hub/">
+      
+      
+        <link rel="prev" href="../services/">
+      
+      
+        <link rel="next" href="../ip-plan/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Hub 目標架構 - Homelab 基礎架構白皮書</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hub" class="md-skip">
+          跳轉到
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="頁首">
+    <a href=".." title="Homelab 基礎架構白皮書" class="md-header__button md-logo" aria-label="Homelab 基礎架構白皮書" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Homelab 基礎架構白皮書
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hub 目標架構
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切換深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切換深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切換淺色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切換淺色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜尋" placeholder="搜尋" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="搜尋">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清除" aria-label="清除" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜尋引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="導覽列" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Homelab 基礎架構白皮書" class="md-nav__button md-logo" aria-label="Homelab 基礎架構白皮書" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Homelab 基礎架構白皮書
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    總覽
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    網路
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compute/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    運算
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../clusters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    叢集
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    服務
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hub 目標架構
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hub 目標架構
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目錄">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目錄
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        元件
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vlan-72-19216872022-z-hub-dhcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        網段：VLAN 72 · 192.168.72.0/22 · Z-HUB · DHCP 關閉
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#z-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        防火牆（Z-HUB 進出）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        架構圖
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sso-ocp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSO 登入流程（以 OCP 為例）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ocp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        兩座 OCP 的管理範圍
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        建置階段
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ip-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IP 配置總表
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目錄">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目錄
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        元件
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vlan-72-19216872022-z-hub-dhcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        網段：VLAN 72 · 192.168.72.0/22 · Z-HUB · DHCP 關閉
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#z-hub" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        防火牆（Z-HUB 進出）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        架構圖
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sso-ocp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSO 登入流程（以 OCP 為例）
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ocp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        兩座 OCP 的管理範圍
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        建置階段
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="hub">Hub 目標架構</h1>
+<div class="admonition abstract">
+<p class="admonition-title">狀態：規劃中</p>
+<p>Hub 是一座輕量 K8s，負責 GitOps、Policy、SSO 和可觀測性，並統一管理底下的 OpenShift 叢集。Hub 本身嚴格執行 Policy；底下的 Lab 叢集只稽核。</p>
+</div>
+<h2 id="_1">元件</h2>
+<table>
+<thead>
+<tr>
+<th>需求</th>
+<th>元件</th>
+<th>部署在</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>叢集</td>
+<td>k3s，3 個 server 節點（內建 etcd）</td>
+<td>ESXi 192.168.2.200 上的 3 台 VM</td>
+<td>用 Terraform vSphere provider 建立</td>
+</tr>
+<tr>
+<td>API 高可用</td>
+<td>kube-vip</td>
+<td>Hub</td>
+<td>API VIP 192.168.72.5</td>
+</tr>
+<tr>
+<td>LoadBalancer</td>
+<td>MetalLB（L2 模式）</td>
+<td>Hub</td>
+<td>Pool 在 192.168.73.0/24，同一個 VLAN，不需要 static route</td>
+</tr>
+<tr>
+<td>GitOps</td>
+<td>Argo CD + ApplicationSet</td>
+<td>Hub</td>
+<td>Hub 用 app-of-apps 管自己；push 模式管理 OCP</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td>Kyverno + Policy Reporter</td>
+<td>Hub、OCP</td>
+<td>Hub 設 Enforce，OCP 設 Audit</td>
+</tr>
+<tr>
+<td>可觀測性</td>
+<td>Prometheus、Loki、Grafana</td>
+<td>Hub</td>
+<td>收 K8s audit log 和 SSO 登入事件</td>
+</tr>
+<tr>
+<td>SSO</td>
+<td>Authentik，上游接 GitHub org</td>
+<td>Hub</td>
+<td>依 GitHub team 對應權限；Argo CD、Grafana、OCP 都改用它</td>
+</tr>
+<tr>
+<td>服務入口</td>
+<td>Homepage</td>
+<td>Hub</td>
+<td>服務清單</td>
+</tr>
+<tr>
+<td>憑證</td>
+<td>cert-manager + Cloudflare DNS-01</td>
+<td>Hub</td>
+<td>內網服務也拿得到正式憑證</td>
+</tr>
+<tr>
+<td>Secret</td>
+<td>SOPS + age</td>
+<td>Git</td>
+<td>Git 裡不放明文 secret</td>
+</tr>
+<tr>
+<td>備份</td>
+<td>Velero + etcd snapshot → NAS（NFS）</td>
+<td>Hub</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>緊急存取</strong>：k3s 保留本機 admin kubeconfig，Argo CD 保留本機 admin 帳號（平常停用），GitHub 或 Authentik 出問題時使用。</p>
+<h2 id="vlan-72-19216872022-z-hub-dhcp">網段：VLAN 72 · 192.168.72.0/22 · Z-HUB · DHCP 關閉</h2>
+<table>
+<thead>
+<tr>
+<th>範圍</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>192.168.72.1</td>
+<td>Gateway（UDM）</td>
+</tr>
+<tr>
+<td>192.168.72.5</td>
+<td>k3s API VIP（kube-vip）</td>
+</tr>
+<tr>
+<td>192.168.72.10 – .12</td>
+<td>k3s server 節點</td>
+</tr>
+<tr>
+<td>192.168.72.20 – .49</td>
+<td>Hub 上的 infra VM（預留）</td>
+</tr>
+<tr>
+<td>192.168.73.10 – .250</td>
+<td>MetalLB pool；192.168.73.10 固定給 Ingress</td>
+</tr>
+<tr>
+<td>192.168.74.0/23</td>
+<td>預留，之後搬過來的服務</td>
+</tr>
+</tbody>
+</table>
+<p><strong>網域</strong>：Hub 服務統一使用 <code>*.hub.example.com</code>。內網由 NAS 上的 AdGuard 做 DNS rewrite，指向 Ingress 192.168.73.10；憑證用 Cloudflare DNS-01 申請 wildcard。</p>
+<h2 id="z-hub">防火牆（Z-HUB 進出）</h2>
+<table>
+<thead>
+<tr>
+<th>來源 → 目的</th>
+<th>內容</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Z-LAB → Z-HUB</td>
+<td>全通</td>
+<td>OCP 預設可以連到 Hub 的服務（OIDC、log、registry mirror）</td>
+</tr>
+<tr>
+<td>Z-HUB → Z-LAB</td>
+<td>TCP 6443 → OCP API</td>
+<td>Argo CD 用 push 模式部署</td>
+</tr>
+<tr>
+<td>Internal → Z-HUB</td>
+<td>全通</td>
+<td>管理用</td>
+</tr>
+<tr>
+<td>Vpn → Z-HUB</td>
+<td>全通</td>
+<td>和 Z-LAB 一致</td>
+</tr>
+<tr>
+<td>Z-HOME → Z-HUB</td>
+<td>TCP 443 → Ingress</td>
+<td>瀏覽器登入 SSO 和各服務</td>
+</tr>
+<tr>
+<td>Z-HUB → Internal</td>
+<td>DNS、NTP、NFS → NAS</td>
+<td>NFS 給 Velero 備份</td>
+</tr>
+<tr>
+<td>Z-HUB → External</td>
+<td>允許</td>
+<td>GitHub、container registry、Cloudflare API</td>
+</tr>
+</tbody>
+</table>
+<p>OCP 登入不需要放寬 OCP 的出口白名單：OCP 的 OAuth server 連的是 Hub 的 Authentik，只有 Hub 需要連 GitHub。OCP 上的 Kyverno 要拉 image，建議在 Hub 架 registry mirror（例如 Harbor 的 proxy cache），OCP 透過 Z-LAB → Z-HUB 拉取。</p>
+<h2 id="_2">架構圖</h2>
+<pre class="mermaid"><code>%%{init: {'theme':'base'}}%%
+flowchart TB
+    GH(["GitHub org"])
+    USER(["使用者瀏覽器&lt;br/&gt;Z-HOME / Internal"])
+
+    subgraph ZHUB["Z-HUB · VLAN 72 · 192.168.72.0/22"]
+        ING["Ingress&lt;br/&gt;192.168.73.10"]
+        AUTH["Authentik&lt;br/&gt;SSO"]
+        ARGO["Argo CD"]
+        KYV["Kyverno&lt;br/&gt;Enforce"]
+        OBS["Grafana · Loki&lt;br/&gt;Prometheus"]
+        HP["Homepage"]
+    end
+
+    subgraph ZLAB["Z-LAB · VLAN 69"]
+        OCP1["OCP 4.16&lt;br/&gt;CD 部署目標&lt;br/&gt;Kyverno Audit"]
+        OCP2["OCP 4.20&lt;br/&gt;節點重新加入測試&lt;br/&gt;Kyverno Audit"]
+    end
+
+    NAS[("NAS 192.168.2.253&lt;br/&gt;NFS 備份")]
+
+    USER -- "443" --&gt; ING
+    ING --&gt; AUTH &amp; ARGO &amp; OBS &amp; HP
+    AUTH -- "OAuth" --&gt; GH
+    ARGO -- "拉 Git repo" --&gt; GH
+    %% 連到 subgraph 而不是個別叢集，避免線條交叉
+    ARGO -- "6443 push" --&gt; ZLAB
+    ZLAB -. "OIDC 登入" .-&gt; AUTH
+    ZLAB -. "log 傳送" .-&gt; OBS
+    ZHUB -. "Velero" .-&gt; NAS
+
+    %% 外部節點用粗灰框、Hub 元件用綠框；不只靠顏色區分
+    classDef ext fill:#f1f3f4,stroke:#5f6368,stroke-width:2px;
+    classDef hub fill:#e6f4ea,stroke:#137333;
+    class GH,USER,NAS ext;
+    class ING,AUTH,ARGO,KYV,OBS,HP hub;</code></pre>
+<h2 id="sso-ocp">SSO 登入流程（以 OCP 為例）</h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as 使用者
+    participant OCP as OCP OAuth
+    participant AK as Authentik（Hub）
+    participant GH as GitHub
+    U-&gt;&gt;OCP: 開啟 console
+    OCP-&gt;&gt;AK: 轉址到 OIDC 授權端點
+    AK-&gt;&gt;GH: GitHub OAuth 登入
+    GH--&gt;&gt;AK: 使用者和 team 資訊
+    AK--&gt;&gt;OCP: ID token（groups = GitHub team）
+    OCP--&gt;&gt;U: 登入成功，依 group 對應 RBAC</code></pre>
+<h2 id="ocp">兩座 OCP 的管理範圍</h2>
+<table>
+<thead>
+<tr>
+<th>叢集</th>
+<th>Argo CD 部署內容</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OCP 4.16</td>
+<td>完整的應用部署</td>
+<td>CD 部署目標</td>
+</tr>
+<tr>
+<td>OCP 4.20</td>
+<td>只放共用基準設定（Kyverno、OAuth、log 傳送）</td>
+<td>會常常拆掉重建</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">建置階段</h2>
+<table>
+<thead>
+<tr>
+<th>階段</th>
+<th>內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>H0</td>
+<td>UniFi 加 VLAN 72 和 Z-HUB policy（Terraform）；在 ESXi 192.168.2.200 建 3 台 VM</td>
+</tr>
+<tr>
+<td>H1</td>
+<td>k3s、kube-vip、MetalLB、cert-manager、Argo CD（app-of-apps）</td>
+</tr>
+<tr>
+<td>H2</td>
+<td>Authentik 接 GitHub；Argo CD、Grafana 改用 SSO</td>
+</tr>
+<tr>
+<td>H3</td>
+<td>Kyverno（Hub Enforce）、可觀測性、Velero</td>
+</tr>
+<tr>
+<td>H4</td>
+<td>註冊兩座 OCP；OCP Kyverno 設 Audit；OCP OAuth 接 Authentik；registry mirror</td>
+</tr>
+<tr>
+<td>H5</td>
+<td>逐步把服務搬到 192.168.74.0/23</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到頂端
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.top", "toc.follow", "search.highlight"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u8907\u88fd", "clipboard.copy": "\u8907\u88fd", "search.result.more.one": "\u6b64\u9801\u5c1a\u6709 1 \u500b\u7b26\u5408\u7684\u9805\u76ee", "search.result.more.other": "\u6b64\u9801\u5c1a\u6709 # \u500b\u7b26\u5408\u7684\u9805\u76ee", "search.result.none": "\u6c92\u6709\u7b26\u5408\u7684\u9805\u76ee", "search.result.one": "\u627e\u5230 1 \u500b\u7b26\u5408\u7684\u9805\u76ee", "search.result.other": "\u627e\u5230 # \u500b\u7b26\u5408\u7684\u9805\u76ee", "search.result.placeholder": "\u6253\u5b57\u9032\u884c\u641c\u5c0b", "search.result.term.missing": "\u7f3a\u5c11\u5b57\u8a5e", "select.version": "\u9078\u64c7\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
